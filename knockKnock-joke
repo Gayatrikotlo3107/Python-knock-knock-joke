@@ -1,0 +1,67 @@
+'''
+Filename: knockKnock
+Author: Gayatri kotlo
+Purpose: Tell Knock-knock jokes
+Revisions:
+    00: announce, get inputs from user for number of jokes and handle exceptions
+    01: function for line1 and line2
+    02: function for line3 and line4
+    03: function for punctunation removal
+    04: enhancements
+'''
+#importing the required modules
+import random
+#lists for jokes, response exemplars
+jokes= [('Etch', 'Please sneeze into your elbow!'), ('Cash','No thanks, I prefer peanuts.'), ('Tank', 'You\'re welcome.'),
+        ('Ya','Yahoo! I\'m happy to see you too!'), ('Boo', 'Don\'t cry, it\'s only a joke.'), ('Dwayne', 'Dwayne the tub before I dwown.'),
+        ('Cheese', 'Cheese a nice girl.'), ('Donut', 'Donut ask, it\'s a secret'), ('Amy', 'Amy fraid I\'ve forgotten!')]
+response1_exemplars=['whosthere', 'whoisthere', 'whothere', 'whoder', 'whodere', 'whoisder', 'whosder', 'whoisdere', 'whosdere']
+punctuations= ' ?!,:;\'./\t'
+#Announce program
+print(f'Ready to tell a knock-knock joke!\n\nThere are {len(jokes)} available.')
+#Input from user for number of jokes
+while (njokes := input('How many jokes would you like me to tell? ')):
+    try:
+        njokes = int(njokes)
+        if njokes > len(jokes):
+            print(f'\n{njokes} jokes not available. There are {len(jokes)} jokes available.\n')
+            continue
+        else:
+            print(f'\nReady to tell {njokes} jokes!\n')
+            break
+    except ValueError:
+        print(f'Invalid Input. Please input a number in the range 1-{len(jokes)}\n')
+def punc_removal(resp):
+    '''Function to remove punctuations, spaces and to convert to lower case
+    and returns response in lower case without any punctuation'''
+    for c in punctuations:
+        resp= resp.lower().replace(c,'')
+    return resp
+def prompt_response(prompt, responses, suggest):
+    '''Function for the first 2 lines of knock-knock joke'''
+    print(prompt)
+    response = input()
+    response= punc_removal(response)
+    if response in responses:
+        return True
+    else:
+        print(f'The correct response is "{suggest}"\nTry again\n')
+        return False
+def joke_response(prompt):
+    '''Function for the first 2 lines of knock-knock joke'''
+    print(f'{prompt[0]}.')
+    response = input()
+    response= punc_removal(response)
+    if response == prompt[0].lower() + 'who':
+        print(f'{prompt[1]}\n')
+        return True
+    else:
+        print(f'The correct response is "{prompt[0]+ " who?"}"\nTry again\n')
+        return False
+random.shuffle(jokes)
+for joke in jokes[:njokes]:
+    while not prompt_response('Knock-knock', response1_exemplars, "Who's there?"):
+        continue
+    while not joke_response(joke):
+        continue
+print('\nThanks for playing!')
